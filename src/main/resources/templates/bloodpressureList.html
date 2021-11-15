@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>list of blood pressures</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body class="bg-success p-2 text-dark bg-opacity-10">
+<div class="container">
+<figure class="text-center">
+
+  <div class="col-12">
+	</div>
+  <div class="col-12">
+		<h3 th:inline="text" class="display-6">Welcome [[${#httpServletRequest.remoteUser}]] ! :)</h3>
+	</div>
+	  <div class="col-12" style="padding:30px 0">
+	  
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-primary btn-lg"/>
+		</form>
+	</div>
+	<h1 class="display-4" style="padding:15px 0">Your blood pressures</h1>
+    <table class="table table-hover">
+		<tr >
+		    <th class="h4">Date</th>
+		    <th class="h4">User</th>
+		    <th class="h4">Upper Pressure</th>
+		    <th class="h4">Lower Pressure</th>
+		    <th class="h4">Pulse</th>
+		    <th sec:authorize="hasAuthority('ADMIN')"> 
+		    
+		</tr>  
+    	<tr th:each = "bloodpressure : ${pressures}">
+    	<td style="padding: 20px 0" th:text="${bloodpressure.date}"></td>
+    		<td style="padding: 20px 0" th:text="${bloodpressure.user.username}"></td>
+    		<td style="padding: 20px 0" th:text="${bloodpressure.upperPressure}"></td>
+    		<td style="padding: 20px 0" th:text="${bloodpressure.lowerPressure}"></td>
+    		<td style="padding: 20px 0" th:text="${bloodpressure.pulse}"></td>
+    		<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/deleteBloodpressure/{id}(id=${bloodpressure.bloodpressureid})}" class="btn btn-outline-danger btn-sm shadow-sm p-3 mb-5 bg-body rounded">DELETE</a></td>
+    		<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/editBloodpressure/{id}(id=${bloodpressure.bloodpressureid})}" class="btn btn-outline-secondary btn-sm shadow-sm p-3 mb-5 bg-body rounded">EDIT</a></td>	
+    	</tr>
+     </table>
+     <a th:href="@{/addbloodpressure}" class="btn btn-outline-dark shadow p-3 mb-5 bg-body rounded">ADD NEW</a>
+          </figure>
+     </div>
+</body>
+</html>
